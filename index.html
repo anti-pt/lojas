@@ -1,1 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ANTI-PTS</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--red:#e10600;--ink:#000;--paper:#fff;--grey:#f1f1f1;--mute:#555}
+*{box-sizing:border-box}
+body{margin:0;font-family:Barlow,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+h1,h2,h3,.logo{font-family:'Bowlby One',Impact,sans-serif;font-weight:400;line-height:1.05;margin:0}
+header{background:var(--ink);color:#fff;border-bottom:6px solid var(--red);position:sticky;top:0;z-index:5}
+.bar{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.5rem;color:#fff;text-decoration:none}
+.logo img{height:42px}
+nav a{color:#fff;text-decoration:none;font-weight:700;margin-left:18px;padding:6px 0;border-bottom:3px solid transparent}
+nav a.on,nav a:hover{border-color:var(--red)}
+main{max-width:1100px;margin:auto;padding:24px 20px 60px}
+.banner{background:var(--red);color:#fff;border:4px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:22px 26px;margin-bottom:34px}
+.banner h2{font-size:1.5rem;margin-bottom:8px}
+.banner p{margin:0;font-size:1.1rem;max-width:62ch}
+.filters{display:grid;grid-template-columns:2fr 1.3fr 1.3fr;gap:12px;margin-bottom:8px}
+label{font-weight:700;font-size:.9rem;display:block;margin-bottom:4px}
+input,select,textarea{width:100%;font:inherit;padding:11px 12px;border:3px solid var(--ink);background:#fff;border-radius:0}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.count{color:var(--mute);margin:10px 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.card{border:3px solid var(--ink);padding:16px;background:#fff;display:flex;flex-direction:column;gap:8px;box-shadow:5px 5px 0 var(--red)}
+.top{display:flex;gap:12px;align-items:center}
+.top img,.ph{width:56px;height:56px;object-fit:cover;border:3px solid var(--ink);flex:none}
+.ph{background:var(--red);color:#fff;display:grid;place-items:center;font-family:'Bowlby One';font-size:1.4rem}
+.card h3{font-size:1.15rem}
+.tag{display:inline-block;background:var(--ink);color:#fff;font-size:.8rem;padding:2px 8px;font-weight:700}
+.card p{margin:0;color:var(--mute);font-size:.95rem}
+.soc{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+.soc a{border:2px solid var(--ink);padding:3px 10px;font-weight:700;font-size:.9rem;color:var(--ink);text-decoration:none}
+.soc a:hover{background:var(--ink);color:#fff}
+.like{align-self:flex-start;border:3px solid var(--ink);background:#fff;font:inherit;font-weight:700;padding:6px 14px;cursor:pointer}
+.like.on{background:var(--red);color:#fff}
+.btn{background:var(--red);color:#fff;border:3px solid var(--ink);font:inherit;font-family:'Bowlby One';font-size:1.1rem;padding:12px 26px;cursor:pointer;box-shadow:4px 4px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+.btn:disabled{opacity:.6}
+.form{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px}
+.form .full{grid-column:1/-1}
+.msg{padding:12px 14px;border:3px solid var(--ink);margin-top:16px;font-weight:700}
+.msg.ok{background:#e8ffe8}.msg.err{background:#ffe3e1}
+.warn{background:#fff6cc;border:3px solid var(--ink);padding:12px 14px;margin-bottom:20px}
+.sec{display:none}.sec.on{display:block}
+.sobre{max-width:68ch}.sobre h2{font-size:2rem;margin-bottom:14px}.sobre p{font-size:1.1rem}
+footer{border-top:6px solid var(--red);background:var(--ink);color:#fff;text-align:center;padding:18px;font-size:.9rem}
+@media(max-width:720px){.filters,.form{grid-template-columns:1fr}.logo span{display:none}nav a{margin-left:12px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <a class="logo" href="#home"><img src="logo.png" alt=""><span>ANTI-PTS</span></a>
+  <nav><a href="#home" data-p="home">Home</a><a href="#cadastro" data-p="cadastro">Cadastrar</a><a href="#sobre" data-p="sobre">Sobre</a></nav>
+</div></header>
+
+<main>
+<!-- HOME -->
+<section id="home" class="sec">
+  <div class="banner">
+    <h2>Como funciona</h2>
+    <p>É simples: Cadastre as empresas abaixo, de forma anônima. Ajude a divulgar o site para que mais pessoas possam cadastrar empresas e encontrar empresas que apoiam o PT. O site é totalmente gratuito e não possui anúncios. Eles acabaram com o Brasil, agora precisam sentir na pele o que é ser boicotado. Cadastre empresas, compartilhe o site e vamos juntos boicotar os apoiadores do PT.</p>
+  </div>
+  <div id="aviso" class="warn" hidden>O site ainda não está conectado à planilha. Cole o link do Apps Script na constante <b>SCRIPT_URL</b> no início do código do <b>index.html</b>.</div>
+  <div class="filters">
+    <div><label for="fNome">Nome da empresa</label><input id="fNome" placeholder="Ex.: Padaria Central"></div>
+    <div><label for="fCidade">Cidade</label><input id="fCidade" placeholder="Ex.: Campinas"></div>
+    <div><label for="fRegiao">Região</label><select id="fRegiao"><option value="">Todas</option></select></div>
+  </div>
+  <div class="count" id="count">Carregando…</div>
+  <div class="grid" id="lista"></div>
+</section>
+
+<!-- CADASTRO -->
+<section id="cadastro" class="sec">
+  <h2 style="font-size:2rem">Cadastrar empresa</h2>
+  <p>Campos com * são obrigatórios.</p>
+  <div class="form" id="form">
+    <div class="full"><label for="nome">Nome da empresa *</label><input id="nome" maxlength="120"></div>
+    <div><label for="categoria">Categoria / ramo</label><input id="categoria" placeholder="Ex.: Restaurante"></div>
+    <div><label for="cep">CEP *</label><input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000"></div>
+    <div class="full"><label for="endereco">Endereço (rua e número) *</label><input id="endereco"></div>
+    <div><label for="bairro">Bairro</label><input id="bairro"></div>
+    <div><label for="cidade">Cidade *</label><input id="cidade"></div>
+    <div><label for="estado">Estado *</label><select id="estado"><option value="">Selecione</option></select></div>
+    <div><label for="regiao">Região</label><input id="regiao" readonly placeholder="Preenchida pelo estado"></div>
+    <div><label for="instagram">Instagram</label><input id="instagram" placeholder="@usuario ou link"></div>
+    <div><label for="tiktok">TikTok</label><input id="tiktok" placeholder="@usuario ou link"></div>
+    <div class="full"><label for="outras">Outra rede social ou site</label><input id="outras" placeholder="https://…"></div>
+    <div class="full"><label for="logo">Logo da empresa (URL da imagem)</label><input id="logo" placeholder="https://…/logo.png"></div>
+    <div class="full"><button class="btn" id="enviar">Cadastrar empresa</button><div id="msg"></div></div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre" class="sec sobre">
+  <h2>Sobre o ANTI-PTS</h2>
+  <p>O ANTI-PTS é exclusivo para o cadastro de empresas apoiadoras do presidente Lula, ou seja, apoiadoras do PT, que fizeram o L. Cadastre as empresas abaixo, de forma anônima.
+    Ajude a divulgar o site para que mais pessoas possam cadastrar empresas e encontrar empresas que apoiam o PT. O site é totalmente gratuito e não possui anúncios.
+    Eles acabaram com o Brasil, agora precisam sentir na pele o que é ser boicotado. Cadastre empresas, compartilhe o site e vamos juntos boicotar os apoiadores do PT.
+  </p>
+</section>
+</main>
+<footer>ANTI-PTS · cadastro aberto de empresas</footer>
+
+<script>
+// ====== CONFIGURAÇÃO ======
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyjVv3cDiV4M87W4quKQYmNBQtYG8BMOyN43wSOaVByWr-JHSzkbR0KeDr48A6FXLvw/exec'; // cole aqui a URL do Web App do Apps Script (termina em /exec)
+// ==========================
+
+const UF = {AC:'Norte',AP:'Norte',AM:'Norte',PA:'Norte',RO:'Norte',RR:'Norte',TO:'Norte',
+AL:'Nordeste',BA:'Nordeste',CE:'Nordeste',MA:'Nordeste',PB:'Nordeste',PE:'Nordeste',PI:'Nordeste',RN:'Nordeste',SE:'Nordeste',
+DF:'Centro-Oeste',GO:'Centro-Oeste',MT:'Centro-Oeste',MS:'Centro-Oeste',
+ES:'Sudeste',MG:'Sudeste',RJ:'Sudeste',SP:'Sudeste',PR:'Sul',RS:'Sul',SC:'Sul'};
+const $ = id => document.getElementById(id);
+let empresas = [];
+let likes = []; try { likes = JSON.parse(localStorage.getItem('antipts_likes') || '[]'); } catch(e) {}
+
+Object.keys(UF).sort().forEach(u => $('estado').add(new Option(u, u)));
+[...new Set(Object.values(UF))].forEach(r => $('fRegiao').add(new Option(r, r)));
+$('estado').onchange = () => $('regiao').value = UF[$('estado').value] || '';
+$('cep').oninput = e => { let v = e.target.value.replace(/\D/g,'').slice(0,8); e.target.value = v.length > 5 ? v.slice(0,5)+'-'+v.slice(5) : v; };
+
+// navegação
+function nav() {
+  const p = ['home','cadastro','sobre'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
+  document.querySelectorAll('.sec').forEach(s => s.classList.toggle('on', s.id === p));
+  document.querySelectorAll('nav a').forEach(a => a.classList.toggle('on', a.dataset.p === p));
+  window.scrollTo(0,0);
+}
+addEventListener('hashchange', nav); nav();
+
+const norm = s => String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function safeUrl(u) { u = String(u||'').trim(); if (!u) return ''; if (!/^https?:\/\//i.test(u)) u = 'https://' + u; try { return new URL(u).href; } catch(e) { return ''; } }
+function social(v, base) { v = String(v||'').trim(); if (!v) return ''; if (/^https?:\/\//i.test(v) || v.includes('.')) return safeUrl(v); return base + v.replace(/^@/, ''); }
+
+function render() {
+  const n = norm($('fNome').value), c = norm($('fCidade').value), r = $('fRegiao').value;
+  const out = empresas.filter(e => norm(e.nome).includes(n) && norm(e.cidade).includes(c) && (!r || e.regiao === r))
+    .sort((a,b) => (Number(b.curtidas)||0) - (Number(a.curtidas)||0));
+  $('count').textContent = out.length ? out.length + (out.length === 1 ? ' empresa encontrada' : ' empresas encontradas') : 'Nenhuma empresa encontrada. Cadastre a primeira na aba Cadastrar.';
+  $('lista').innerHTML = out.map(e => {
+    const logo = safeUrl(e.logo), ig = social(e.instagram,'https://instagram.com/'), tk = social(e.tiktok,'https://tiktok.com/@'), ot = safeUrl(e.outras);
+    const liked = likes.includes(e.id);
+    return `<article class="card">
+      <div class="top">${logo ? `<img src="${esc(logo)}" alt="Logo de ${esc(e.nome)}" onerror="this.outerHTML='<div class=ph>${esc((e.nome||'?')[0]).toUpperCase()}</div>'">` : `<div class="ph">${esc((e.nome||'?')[0]).toUpperCase()}</div>`}
+      <div><h3>${esc(e.nome)}</h3>${e.categoria ? `<span class="tag">${esc(e.categoria)}</span>` : ''}</div></div>
+      <p>${esc(e.endereco)}${e.bairro ? ', ' + esc(e.bairro) : ''}<br>${esc(e.cidade)} - ${esc(e.estado)} · CEP ${esc(e.cep)}<br>${esc(e.regiao)}</p>
+      <div class="soc">${ig ? `<a href="${esc(ig)}" target="_blank" rel="noopener">Instagram</a>` : ''}${tk ? `<a href="${esc(tk)}" target="_blank" rel="noopener">TikTok</a>` : ''}${ot ? `<a href="${esc(ot)}" target="_blank" rel="noopener">Site / outra rede</a>` : ''}</div>
+      <button class="like ${liked ? 'on' : ''}" data-id="${esc(e.id)}" aria-pressed="${liked}">${liked ? '♥' : '♡'} ${Number(e.curtidas)||0}</button>
+    </article>`;
+  }).join('');
+}
+['fNome','fCidade'].forEach(i => $(i).oninput = render); $('fRegiao').onchange = render;
+
+async function carregar() {
+  if (!SCRIPT_URL) { $('aviso').hidden = false; $('count').textContent = ''; return; }
+  try {
+    const r = await fetch(SCRIPT_URL); const d = await r.json();
+    empresas = d.empresas || []; render();
+  } catch(e) { $('count').textContent = 'Não foi possível carregar as empresas. Tente novamente em instantes.'; }
+}
+function post(body) { return fetch(SCRIPT_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(body) }).then(r => r.json()); }
+
+$('lista').onclick = async ev => {
+  const b = ev.target.closest('.like'); if (!b || !SCRIPT_URL) return;
+  const id = b.dataset.id, e = empresas.find(x => x.id === id), was = likes.includes(id);
+  likes = was ? likes.filter(x => x !== id) : likes.concat(id);
+  try { localStorage.setItem('antipts_likes', JSON.stringify(likes)); } catch(x) {}
+  e.curtidas = Math.max((Number(e.curtidas)||0) + (was ? -1 : 1), 0); render();
+  try { await post({ action:'like', id, delta: was ? -1 : 1 }); } catch(x) {}
+};
+
+function msg(t, ok) { $('msg').innerHTML = `<div class="msg ${ok ? 'ok' : 'err'}">${t}</div>`; }
+$('enviar').onclick = async () => {
+  if (!SCRIPT_URL) return msg('Conecte o site à planilha primeiro (SCRIPT_URL).', false);
+  const g = id => $(id).value.trim();
+  const emp = { nome:g('nome'), categoria:g('categoria'), cep:g('cep'), endereco:g('endereco'), bairro:g('bairro'), cidade:g('cidade'), estado:g('estado'), regiao:g('regiao'), instagram:g('instagram'), tiktok:g('tiktok'), outras:g('outras'), logo:g('logo') };
+  if (!emp.nome || !emp.endereco || !emp.cidade || !emp.estado || emp.cep.length < 9) return msg('Preencha nome, CEP completo, endereço, cidade e estado.', false);
+  $('enviar').disabled = true;
+  try {
+    const r = await post({ action:'add', empresa: emp });
+    if (!r.ok) throw 0;
+    msg('Empresa cadastrada! Ela já aparece na busca da Home.', true);
+    document.querySelectorAll('#form input, #form select').forEach(i => i.value = '');
+    carregar();
+  } catch(e) { msg('Não foi possível cadastrar. Confira a URL do Apps Script e tente de novo.', false); }
+  $('enviar').disabled = false;
+};
+carregar();
+</script>
+</body>
+</html>
 
