@@ -179,24 +179,30 @@ $('lista').onclick = async ev => {
 };
 
 function msg(t, ok) { $('msg').innerHTML = `<div class="msg ${ok ? 'ok' : 'err'}">${t}</div>`; }
+
 $('enviar').onclick = async () => {
   if (!SCRIPT_URL) return msg('Conecte o site à planilha primeiro (SCRIPT_URL).', false);
   const g = id => $(id).value.trim();
-  const emp = { nome:g('nome'), categoria:g('categoria'), cep:g('cep'), endereco:g('endereco'), bairro:g('bairro'), cidade:g('cidade'), estado:g('estado'), regiao:g('regiao'), instagram:g('instagram'), tiktok:g('tiktok'), outras:g('outras'), logo:g('logo') };
+  const emp = {
+    nome: g('nome'), categoria: g('categoria'), cep: g('cep'),
+    endereco: g('endereco'), bairro: g('bairro'), cidade: g('cidade'),
+    estado: g('estado'), regiao: g('regiao'), instagram: g('instagram'),
+    tiktok: g('tiktok'), outras: g('outras'), logo: g('logo')
+  };
   if (emp.cep.length < 9) return msg('Preencha o CEP completo (8 números).', false);
   $('enviar').disabled = true;
   try {
-    const r = await post({ action:'add', empresa: emp });
+    const r = await post({ action: 'add', empresa: emp });
     if (!r.ok) throw 0;
     msg('Empresa cadastrada! Ela já aparece na busca da Home.', true);
     document.querySelectorAll('#form input, #form select').forEach(i => i.value = '');
     carregar();
-  } catch(e) { msg('Não foi possível cadastrar. Confira a URL do Apps Script e tente de novo.', false); }
+  } catch (e) {
+    msg('Não foi possível cadastrar. Confira a URL do Apps Script e tente de novo.', false);
+  }
   $('enviar').disabled = false;
 };
-  } catch(e) { msg('Não foi possível cadastrar. Confira a URL do Apps Script e tente de novo.', false); }
-  $('enviar').disabled = false;
-};
+
 carregar();
 </script>
 </body>
