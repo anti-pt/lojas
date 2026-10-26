@@ -111,7 +111,7 @@ footer{border-top:6px solid var(--red);background:var(--ink);color:#fff;text-ali
 
 <script>
 // ====== CONFIGURAÇÃO ======
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyjVv3cDiV4M87W4quKQYmNBQtYG8BMOyN43wSOaVByWr-JHSzkbR0KeDr48A6FXLvw/exec'; // cole aqui a URL do Web App do Apps Script (termina em /exec)
+const SCRIPT_URL = 'COLE_AQUI_SUA_URL_DO_APPS_SCRIPT'; // a URL que termina em /exec
 // ==========================
 
 const UF = {AC:'Norte',AP:'Norte',AM:'Norte',PA:'Norte',RO:'Norte',RR:'Norte',TO:'Norte',
@@ -120,68 +120,120 @@ DF:'Centro-Oeste',GO:'Centro-Oeste',MT:'Centro-Oeste',MS:'Centro-Oeste',
 ES:'Sudeste',MG:'Sudeste',RJ:'Sudeste',SP:'Sudeste',PR:'Sul',RS:'Sul',SC:'Sul'};
 const $ = id => document.getElementById(id);
 let empresas = [];
-let likes = []; try { likes = JSON.parse(localStorage.getItem('antipts_likes') || '[]'); } catch(e) {}
+let likes = [];
+try { likes = JSON.parse(localStorage.getItem('antipts_likes') || '[]'); } catch (e) {}
 
 Object.keys(UF).sort().forEach(u => $('estado').add(new Option(u, u)));
 [...new Set(Object.values(UF))].forEach(r => $('fRegiao').add(new Option(r, r)));
 $('estado').onchange = () => $('regiao').value = UF[$('estado').value] || '';
-$('cep').oninput = e => { let v = e.target.value.replace(/\D/g,'').slice(0,8); e.target.value = v.length > 5 ? v.slice(0,5)+'-'+v.slice(5) : v; };
+$('cep').oninput = e => {
+  let v = e.target.value.replace(/\D/g, '').slice(0, 8);
+  e.target.value = v.length > 5 ? v.slice(0, 5) + '-' + v.slice(5) : v;
+};
 
-// navegação
+// navegação entre as páginas
 function nav() {
-  const p = ['home','cadastro','sobre'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
+  const p = ['home', 'cadastro', 'sobre'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
   document.querySelectorAll('.sec').forEach(s => s.classList.toggle('on', s.id === p));
   document.querySelectorAll('nav a').forEach(a => a.classList.toggle('on', a.dataset.p === p));
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 }
-addEventListener('hashchange', nav); nav();
+addEventListener('hashchange', nav);
+nav();
 
-const norm = s => String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function safeUrl(u) { u = String(u||'').trim(); if (!u) return ''; if (!/^https?:\/\//i.test(u)) u = 'https://' + u; try { return new URL(u).href; } catch(e) { return ''; } }
-function social(v, base) { v = String(v||'').trim(); if (!v) return ''; if (/^https?:\/\//i.test(v) || v.includes('.')) return safeUrl(v); return base + v.replace(/^@/, ''); }
+// funções de apoio
+const norm = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function safeUrl(u) {
+  u = String(u || '').trim(); if (!u) return '';
+  if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  try { return new URL(u).href; } catch (e) { return ''; }
+}
+function social(v, base) {
+  v = String(v || '').trim(); if (!v) return '';
+  if (/^https?:\/\//i.test(v) || v.includes('.')) return safeUrl(v);
+  return base + v.replace(/^@/, '');
+}
 
+// lista de empresas + filtros
 function render() {
   const n = norm($('fNome').value), c = norm($('fCidade').value), r = $('fRegiao').value;
-  const out = empresas.filter(e => norm(e.nome).includes(n) && norm(e.cidade).includes(c) && (!r || e.regiao === r))
-    .sort((a,b) => (Number(b.curtidas)||0) - (Number(a.curtidas)||0));
-  $('count').textContent = out.length ? out.length + (out.length === 1 ? ' empresa encontrada' : ' empresas encontradas') : 'Nenhuma empresa encontrada. Cadastre a primeira na aba Cadastrar.';
+  const out = empresas
+    .filter(e => norm(e.nome).includes(n) && norm(e.cidade).includes(c) && (!r || e.regiao === r))
+    .sort((a, b) => (Number(b.curtidas) || 0) - (Number(a.curtidas) || 0));
+
+  $('count').textContent = out.length
+    ? out.length + (out.length === 1 ? ' empresa encontrada' : ' empresas encontradas')
+    : 'Nenhuma empresa encontrada. Cadastre a primeira na aba Cadastrar.';
+
   $('lista').innerHTML = out.map(e => {
-    const logo = safeUrl(e.logo), ig = social(e.instagram,'https://instagram.com/'), tk = social(e.tiktok,'https://tiktok.com/@'), ot = safeUrl(e.outras);
+    const nome = e.nome || 'Empresa sem nome';
+    const inicial = esc(nome[0]).toUpperCase();
+    const logo = safeUrl(e.logo);
+    const ig = social(e.instagram, 'https://instagram.com/');
+    const tk = social(e.tiktok, 'https://tiktok.com/@');
+    const ot = safeUrl(e.outras);
     const liked = likes.includes(e.id);
+    const linha1 = [e.endereco, e.bairro].filter(Boolean).map(esc).join(', ');
+    const linha2 = [e.cidade, e.estado].filter(Boolean).map(esc).join(' - ');
+
     return `<article class="card">
-      <div class="top">${logo ? `<img src="${esc(logo)}" alt="Logo de ${esc(e.nome)}" onerror="this.outerHTML='<div class=ph>${esc((e.nome||'?')[0]).toUpperCase()}</div>'">` : `<div class="ph">${esc((e.nome||'?')[0]).toUpperCase()}</div>`}
-      <div><h3>${esc(e.nome)}</h3>${e.categoria ? `<span class="tag">${esc(e.categoria)}</span>` : ''}</div></div>
-      <p>${esc(e.endereco)}${e.bairro ? ', ' + esc(e.bairro) : ''}<br>${esc(e.cidade)} - ${esc(e.estado)} · CEP ${esc(e.cep)}<br>${esc(e.regiao)}</p>
-      <div class="soc">${ig ? `<a href="${esc(ig)}" target="_blank" rel="noopener">Instagram</a>` : ''}${tk ? `<a href="${esc(tk)}" target="_blank" rel="noopener">TikTok</a>` : ''}${ot ? `<a href="${esc(ot)}" target="_blank" rel="noopener">Site / outra rede</a>` : ''}</div>
-      <button class="like ${liked ? 'on' : ''}" data-id="${esc(e.id)}" aria-pressed="${liked}">${liked ? '👎' : '👎🏿'} ${Number(e.curtidas)||0}</button>
+      <div class="top">
+        ${logo
+          ? `<img src="${esc(logo)}" alt="Logo de ${esc(nome)}" onerror="this.outerHTML='<div class=ph>${inicial}</div>'">`
+          : `<div class="ph">${inicial}</div>`}
+        <div><h3>${esc(nome)}</h3>${e.categoria ? `<span class="tag">${esc(e.categoria)}</span>` : ''}</div>
+      </div>
+      <p>${linha1}${linha1 ? '<br>' : ''}${linha2}${linha2 ? ' · ' : ''}CEP ${esc(e.cep)}${e.regiao ? '<br>' + esc(e.regiao) : ''}</p>
+      <div class="soc">
+        ${ig ? `<a href="${esc(ig)}" target="_blank" rel="noopener">Instagram</a>` : ''}
+        ${tk ? `<a href="${esc(tk)}" target="_blank" rel="noopener">TikTok</a>` : ''}
+        ${ot ? `<a href="${esc(ot)}" target="_blank" rel="noopener">Site / outra rede</a>` : ''}
+      </div>
+      <button class="like ${liked ? 'on' : ''}" data-id="${esc(e.id)}" aria-pressed="${liked}">${liked ? '♥' : '♡'} ${Number(e.curtidas) || 0}</button>
     </article>`;
   }).join('');
 }
-['fNome','fCidade'].forEach(i => $(i).oninput = render); $('fRegiao').onchange = render;
+['fNome', 'fCidade'].forEach(i => $(i).oninput = render);
+$('fRegiao').onchange = render;
 
+// conexão com a planilha
 async function carregar() {
-  if (!SCRIPT_URL) { $('aviso').hidden = false; $('count').textContent = ''; return; }
+  if (!SCRIPT_URL || SCRIPT_URL.startsWith('COLE_AQUI')) { $('aviso').hidden = false; $('count').textContent = ''; return; }
   try {
-    const r = await fetch(SCRIPT_URL); const d = await r.json();
-    empresas = d.empresas || []; render();
-  } catch(e) { $('count').textContent = 'Não foi possível carregar as empresas. Tente novamente em instantes.'; }
+    const r = await fetch(SCRIPT_URL);
+    const d = await r.json();
+    empresas = d.empresas || [];
+    render();
+  } catch (e) {
+    $('count').textContent = 'Não foi possível carregar as empresas. Tente novamente em instantes.';
+  }
 }
-function post(body) { return fetch(SCRIPT_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(body) }).then(r => r.json()); }
+function post(body) {
+  return fetch(SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(body)
+  }).then(r => r.json());
+}
 
+// curtidas
 $('lista').onclick = async ev => {
-  const b = ev.target.closest('.like'); if (!b || !SCRIPT_URL) return;
+  const b = ev.target.closest('.like');
+  if (!b || !SCRIPT_URL) return;
   const id = b.dataset.id, e = empresas.find(x => x.id === id), was = likes.includes(id);
   likes = was ? likes.filter(x => x !== id) : likes.concat(id);
-  try { localStorage.setItem('antipts_likes', JSON.stringify(likes)); } catch(x) {}
-  e.curtidas = Math.max((Number(e.curtidas)||0) + (was ? -1 : 1), 0); render();
-  try { await post({ action:'like', id, delta: was ? -1 : 1 }); } catch(x) {}
+  try { localStorage.setItem('antipts_likes', JSON.stringify(likes)); } catch (x) {}
+  e.curtidas = Math.max((Number(e.curtidas) || 0) + (was ? -1 : 1), 0);
+  render();
+  try { await post({ action: 'like', id, delta: was ? -1 : 1 }); } catch (x) {}
 };
 
+// cadastro (só o CEP é obrigatório)
 function msg(t, ok) { $('msg').innerHTML = `<div class="msg ${ok ? 'ok' : 'err'}">${t}</div>`; }
 
 $('enviar').onclick = async () => {
-  if (!SCRIPT_URL) return msg('Conecte o site à planilha primeiro (SCRIPT_URL).', false);
+  if (!SCRIPT_URL || SCRIPT_URL.startsWith('COLE_AQUI')) return msg('Conecte o site à planilha primeiro (SCRIPT_URL).', false);
   const g = id => $(id).value.trim();
   const emp = {
     nome: g('nome'), categoria: g('categoria'), cep: g('cep'),
