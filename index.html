@@ -190,7 +190,7 @@ function render() {
         ${tk ? `<a href="${esc(tk)}" target="_blank" rel="noopener">TikTok</a>` : ''}
         ${ot ? `<a href="${esc(ot)}" target="_blank" rel="noopener">Site / outra rede</a>` : ''}
       </div>
-      <button class="like ${liked ? 'on' : ''}" data-id="${esc(e.id)}" aria-pressed="${liked}">${liked ? '♥' : '♡'} ${Number(e.curtidas) || 0}</button>
+      <button class="like ${liked ? 'on' : ''}" data-id="${esc(e.id)}" aria-pressed="${liked}">${liked ? '👎' : '👎🏿'} ${Number(e.curtidas) || 0}</button>
     </article>`;
   }).join('');
 }
