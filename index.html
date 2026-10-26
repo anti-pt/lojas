@@ -154,7 +154,7 @@ function render() {
       <div><h3>${esc(e.nome)}</h3>${e.categoria ? `<span class="tag">${esc(e.categoria)}</span>` : ''}</div></div>
       <p>${esc(e.endereco)}${e.bairro ? ', ' + esc(e.bairro) : ''}<br>${esc(e.cidade)} - ${esc(e.estado)} · CEP ${esc(e.cep)}<br>${esc(e.regiao)}</p>
       <div class="soc">${ig ? `<a href="${esc(ig)}" target="_blank" rel="noopener">Instagram</a>` : ''}${tk ? `<a href="${esc(tk)}" target="_blank" rel="noopener">TikTok</a>` : ''}${ot ? `<a href="${esc(ot)}" target="_blank" rel="noopener">Site / outra rede</a>` : ''}</div>
-      <button class="like ${liked ? 'on' : ''}" data-id="${esc(e.id)}" aria-pressed="${liked}">${liked ? '♥' : '♡'} ${Number(e.curtidas)||0}</button>
+      <button class="like ${liked ? 'on' : ''}" data-id="${esc(e.id)}" aria-pressed="${liked}">${liked ? '👎' : '♡'} ${Number(e.curtidas)||0}</button>
     </article>`;
   }).join('');
 }
