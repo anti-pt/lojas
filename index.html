@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ANTI-PTS</title>
 <link rel="icon" href="logo.png">
-<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{--red:#e10600;--ink:#000;--paper:#fff;--grey:#f1f1f1;--mute:#555}
 *{box-sizing:border-box}
@@ -154,7 +154,7 @@ function render() {
       <div><h3>${esc(e.nome)}</h3>${e.categoria ? `<span class="tag">${esc(e.categoria)}</span>` : ''}</div></div>
       <p>${esc(e.endereco)}${e.bairro ? ', ' + esc(e.bairro) : ''}<br>${esc(e.cidade)} - ${esc(e.estado)} · CEP ${esc(e.cep)}<br>${esc(e.regiao)}</p>
       <div class="soc">${ig ? `<a href="${esc(ig)}" target="_blank" rel="noopener">Instagram</a>` : ''}${tk ? `<a href="${esc(tk)}" target="_blank" rel="noopener">TikTok</a>` : ''}${ot ? `<a href="${esc(ot)}" target="_blank" rel="noopener">Site / outra rede</a>` : ''}</div>
-      <button class="like ${liked ? 'on' : ''}" data-id="${esc(e.id)}" aria-pressed="${liked}">${liked ? '👎' : '♡'} ${Number(e.curtidas)||0}</button>
+      <button class="like ${liked ? 'on' : ''}" data-id="${esc(e.id)}" aria-pressed="${liked}">${liked ? '👎🏿' : '👎'} ${Number(e.curtidas)||0}</button>
     </article>`;
   }).join('');
 }
