@@ -80,15 +80,15 @@ footer{border-top:6px solid var(--red);background:var(--ink);color:#fff;text-ali
 <!-- CADASTRO -->
 <section id="cadastro" class="sec">
   <h2 style="font-size:2rem">Cadastrar empresa</h2>
-  <p>Campos com * são obrigatórios.</p>
+  <p>Só o CEP é obrigatório. Os outros campos são opcionais.</p>
   <div class="form" id="form">
-    <div class="full"><label for="nome">Nome da empresa *</label><input id="nome" maxlength="120"></div>
+    <div class="full"><label for="nome">Nome da empresa</label><input id="nome" maxlength="120"></div>
     <div><label for="categoria">Categoria / ramo</label><input id="categoria" placeholder="Ex.: Restaurante"></div>
     <div><label for="cep">CEP *</label><input id="cep" inputmode="numeric" maxlength="9" placeholder="00000-000"></div>
-    <div class="full"><label for="endereco">Endereço (rua e número) *</label><input id="endereco"></div>
+    <div class="full"><label for="endereco">Endereço (rua e número)</label><input id="endereco"></div>
     <div><label for="bairro">Bairro</label><input id="bairro"></div>
-    <div><label for="cidade">Cidade *</label><input id="cidade"></div>
-    <div><label for="estado">Estado *</label><select id="estado"><option value="">Selecione</option></select></div>
+    <div><label for="cidade">Cidade</label><input id="cidade"></div>
+    <div><label for="estado">Estado</label><select id="estado"><option value="">Selecione</option></select></div>
     <div><label for="regiao">Região</label><input id="regiao" readonly placeholder="Preenchida pelo estado"></div>
     <div><label for="instagram">Instagram</label><input id="instagram" placeholder="@usuario ou link"></div>
     <div><label for="tiktok">TikTok</label><input id="tiktok" placeholder="@usuario ou link"></div>
@@ -183,7 +183,7 @@ $('enviar').onclick = async () => {
   if (!SCRIPT_URL) return msg('Conecte o site à planilha primeiro (SCRIPT_URL).', false);
   const g = id => $(id).value.trim();
   const emp = { nome:g('nome'), categoria:g('categoria'), cep:g('cep'), endereco:g('endereco'), bairro:g('bairro'), cidade:g('cidade'), estado:g('estado'), regiao:g('regiao'), instagram:g('instagram'), tiktok:g('tiktok'), outras:g('outras'), logo:g('logo') };
-  if (!emp.nome || !emp.endereco || !emp.cidade || !emp.estado || emp.cep.length < 9) return msg('Preencha nome, CEP completo, endereço, cidade e estado.', false);
+  if (emp.cep.length < 9) return msg('Preencha o CEP completo (8 números).', false);
   $('enviar').disabled = true;
   try {
     const r = await post({ action:'add', empresa: emp });
@@ -191,6 +191,9 @@ $('enviar').onclick = async () => {
     msg('Empresa cadastrada! Ela já aparece na busca da Home.', true);
     document.querySelectorAll('#form input, #form select').forEach(i => i.value = '');
     carregar();
+  } catch(e) { msg('Não foi possível cadastrar. Confira a URL do Apps Script e tente de novo.', false); }
+  $('enviar').disabled = false;
+};
   } catch(e) { msg('Não foi possível cadastrar. Confira a URL do Apps Script e tente de novo.', false); }
   $('enviar').disabled = false;
 };
